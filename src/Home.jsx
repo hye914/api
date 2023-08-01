@@ -14,7 +14,7 @@ const Home = () => {
 //데이터 불러오기
   const fetchData= async()=> {
     try{
-      const response = await axios.get(`http://openAPI.seoul.go.kr:8088/${VITE_APP_API_KEY}/json/RealtimeCityAir/1/17/`);
+      const response = await axios.get(`http://openAPI.seoul.go.kr:8088/${VITE_APP_API_KEY}/json/RealtimeCityAir/1/40/`);
       setweatherData(response.data.RealtimeCityAir.row);
     } catch(error){
       console.log(error)
@@ -31,7 +31,6 @@ const Home = () => {
 
   const homeData = weatherData.filter((weatherData) => weatherData.MSRSTE_NM === "영등포구");
 
-  const colorPm='';
 
   return(
     <HomeContainer>
@@ -53,21 +52,22 @@ const Home = () => {
             </tr>
           </thead>
           <tbody>
-            
-              {weatherData.map((weatherData,idx)=>(
-                <tr style={{color: homeData.includes(weatherData)? "orange":"" }} key={idx}>
-                <td >{weatherData.MSRDT}</td>
-                <td onClick={() => navigate(`/detail/${weatherData.MSRSTE_NM}`)}>{weatherData.MSRSTE_NM}</td>
-                <td >{weatherData.PM10}</td>
-                <td >{weatherData.PM25}</td>
-                <td >{weatherData.IDEX_NM}</td>
-                <td >{weatherData.IDEX_MVL}</td>
-                <td >{weatherData.O3}</td>
-                <td >{weatherData.CO}</td>
-                </tr>
-              ))}
-            
+            {weatherData.map((weatherData, idx) => (
+              <tr style={{ color: homeData.includes(weatherData) ? "orange" : "" }} key={idx}>
+                <td>{weatherData.MSRDT}</td>
+                <td onClick={() => navigate(`/detail/${weatherData.MSRSTE_NM}`, { state: { weatherData: weatherData} })}>
+                  {weatherData.MSRSTE_NM}
+                </td>
+                <td>{weatherData.PM10}</td>
+                <td>{weatherData.PM25}</td>
+                <td>{weatherData.IDEX_NM}</td>
+                <td>{weatherData.IDEX_MVL}</td>
+                <td>{weatherData.O3}</td>
+                <td>{weatherData.CO}</td>
+              </tr>
+            ))}
           </tbody>
+
         </DataTable>
       </BodySection>
     </HomeContainer>
